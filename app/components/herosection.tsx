@@ -1,7 +1,7 @@
 export default function HeroSection() {
   return (
     <>
-      <section className="w-full  bg-red-500 pt-20">
+      <section className="w-full pt-20">
         <div className="w-full h-190">
           <img
             className="w-full h-full"

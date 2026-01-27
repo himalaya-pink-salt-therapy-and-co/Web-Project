@@ -5,20 +5,22 @@ export default function Login() {
   return (
     <>
       <section className="w-full h-screen flex items-center justify-center relative">
-        <Link
-          href="/"
-          className="absolute top-2 right-0 text-xl  text-white font-jost bg-[#D77D4C] py-2 px-6 rounded-l-md  border border-zinc-200"
-        >
-          Create Account?
-        </Link>
         <form className="bg-[#FCFEFD] w-[70%] overflow-hidden mx-auto shadow rounded-md border border-zinc-200 flex justify-between">
           <div className="w-[50%] flex flex-col space-y-4 px-10 py-8">
-            <Link
-              href="/"
-              className="w-8 h-8 border border-zinc-200 rounded-full flex items-center justify-center mb-18"
-            >
-              <FaChevronLeft size={20} />
-            </Link>
+            <div className="flex  mb-18 items-center justify-between">
+              <Link
+                href="/"
+                className="w-8 h-8 border border-zinc-200 rounded-full flex items-center justify-center"
+              >
+                <FaChevronLeft size={20} />
+              </Link>
+              <Link
+                href="/admin/add-products"
+                className="py-2 px-4 bg-[#D77D4C] font-jost rounded-sm text-white "
+              >
+                Admin Login
+              </Link>
+            </div>
             <p className="text-center font-bold text-6xl font-jost select-none pointer-events-none">
               Sign In
             </p>
@@ -50,15 +52,23 @@ export default function Login() {
                 placeholder="Enter Your Email"
               />
             </div>
-            <button className="mt-2 w-full bg-[#D77D4C] text-white py-3.5 text-lg hover:opacity-80 transition font-jost rounded-xs cursor-pointer">
+            <button className="mt-2 w-full bg-[#D77D4C] text-white py-3.5 text-lg hover:opacity-80 transition font-jost rounded-sm cursor-pointer">
               Sign In
             </button>
-            <Link
-              href="/forget-password"
-              className="font-semibold font-jost text-lg cursor-pointer pb-20"
-            >
-              Forget Password?
-            </Link>
+            <div className="flex justify-between">
+              <Link
+                href="/sign-up"
+                className=" text-lg font-semibold font-jost"
+              >
+                Create Account.
+              </Link>
+              <Link
+                href="/forget-password"
+                className="font-semibold font-jost text-lg cursor-pointer pb-20"
+              >
+                Forget Password?
+              </Link>
+            </div>
           </div>
           <div className="w-[50%]  select-none pointer-events-none">
             <img

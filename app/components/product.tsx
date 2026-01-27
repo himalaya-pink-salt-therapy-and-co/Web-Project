@@ -1,38 +1,49 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { ref, onValue } from "firebase/database";
+import { database } from "@/firebase"; // your firebase config path
+
+type Product = {
+  id?: string;
+  title: string;
+  description: string;
+  price: string;
+  image: string;
+};
+
 export default function Products() {
-  const products = [
-    {
-      id: 1,
-      title: "Pink Salt",
-      description:
-        "Pure Himalayan pink salt sourced naturally for cooking and wellness.",
-      price: "Rs. 100",
-      image:
-        "https://www.anveya.com/cdn/shop/articles/shutterstock_1830831551.webp?v=1680239811&width=1000",
-    },
-    {
-      id: 2,
-      title: "Pink Salt Lamp",
-      description:
-        "Handcrafted Himalayan pink salt lamp for a calming environment.",
-      price: "Rs. 2,500",
-      image:
-        "https://tanveersalt.com/wp-content/uploads/2024/09/Himalayan-Salt-Products-And-Their-Major-Benefits.png",
-    },
-    {
-      id: 3,
-      title: "Pink Salt Soap",
-      description: "Mineral-rich pink salt soap for gentle skin cleansing.",
-      price: "Rs. 350",
-      image: "https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec",
-    },
-    {
-      id: 4,
-      title: "Pink Salt Candle Holder",
-      description: "Natural Himalayan salt candle holder for warm ambiance.",
-      price: "Rs. 1,200",
-      image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
-    },
-  ];
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const productsRef = ref(database, "Our-Products");
+    const unsubscribe = onValue(productsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const loadedProducts: Product[] = Object.entries(data).map(
+          ([key, value]) => ({
+            id: key,
+            ...(value as Product),
+          })
+        );
+        setProducts(loadedProducts);
+      } else {
+        setProducts([]);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe(); // cleanup listener on unmount
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="w-full h-screen flex items-center justify-center">
+        <p className="text-xl font-jost">Loading Products...</p>
+      </main>
+    );
+  }
 
   return (
     <main className="w-full bg-[#F5F5F5] border-b border-zinc-100">
@@ -45,7 +56,7 @@ export default function Products() {
         </p>
       </section>
 
-      <section className="w-[85%] mx-auto py-16 flex items-center flex-wrap justify-between">
+      <section className="w-[85%] mx-auto py-16 flex items-center flex-wrap gap-4">
         {products.map((product) => (
           <div
             key={product.id}
@@ -68,7 +79,7 @@ export default function Products() {
 
               <div className="flex w-full items-center justify-between">
                 <p className="font-jost font-bold">Price</p>
-                <p className="font-bold font-jost">{product.price}</p>
+                <p className="font-bold font-jost">Rs. {product.price}</p>
               </div>
 
               <button className="mt-2 w-full bg-[#D77D4C] text-white py-2 text-sm hover:opacity-80 transition font-jost cursor-pointer rounded-xs">

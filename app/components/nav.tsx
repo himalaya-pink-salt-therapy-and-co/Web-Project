@@ -15,16 +15,18 @@ export default function Nav() {
             className="w-full h-full"
           />
         </div>
-        <div className="flex items-center gap-4 font-jost text-xl">
-          <div className="flex gap-6 items-center justify-center text-zinc-500">
-            <Link href="/">Home</Link>
-            <Link href="/signup">About Us</Link>
-            <Link href="/signup">Blogs</Link> <p></p>
-          </div>
-          <div className="relative group flex items-center justify-center border-l-2 border-l-zinc-400 pl-2 cursor-pointer py-2">
-            <TiUser className="text-3xl text-zinc-500" />
+        <div className="flex gap-14 items-center justify-center font-jost text-xl">
+          <Link href="/">Home</Link>
+          <Link href="/signup">About Us</Link>
+          <Link href="/signup">Blogs</Link>
 
-            <div className="absolute top-full right-0 mt-2 w-40 bg-white shadow-lg  opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <Link href="/signup">Contact Us</Link>
+        </div>
+        <div className="flex items-center gap-4 font-jost text-xl">
+          <div className="relative group flex items-center justify-center pl-2 cursor-pointer py-2">
+            <TiUser className="text-3xl " />
+
+            <div className="absolute cursor-pointer top-full right-0 mt-2 w-40 bg-white shadow-lg  opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <Link
                 href="/login"
                 className="block px-4 py-2 text-sm hover:bg-zinc-100"
@@ -32,7 +34,7 @@ export default function Nav() {
                 Login
               </Link>
               <Link
-                href="/signup"
+                href="/sign-up"
                 className="block px-4 py-2 text-sm hover:bg-zinc-100"
               >
                 Sign Up
@@ -42,12 +44,12 @@ export default function Nav() {
 
           <Link
             href="/cart"
-            className="mr-2 flex items-center justify-center relative"
+            className="mr-2 flex items-center justify-center relative cursor-pointer"
           >
             <div className="bg-[#D77D4C] text-white absolute text-xs px-1.5 py-0.5 rounded-full -left-1 -top-1">
               0
             </div>
-            <FaBucket className="text-2xl text-zinc-500" />
+            <FaBucket className="text-2xl" />
           </Link>
         </div>
       </section>

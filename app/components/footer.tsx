@@ -16,13 +16,13 @@ export default function Footer() {
         </div>
         <div className="rlex flex-col space-y-2">
           <p className="font-bold text-2xl font-jost">Usefull Links</p>
-          <p className="flex items-center gap-2 cursor-pointer">
-            <FaPhone size={20} />
-            <p className="text-md font-jost">+92 123 456 789</p>
+          <p className="flex items-center gap-2 cursor-pointer text-md font-jost">
+            <FaPhone size={18} />
+            +92 123 456 789
           </p>
-          <p className="flex items-center gap-2 cursor-pointer">
+          <p className="flex items-center gap-2 cursor-pointer font-jost text-md">
             <RiInstagramFill size={20} />
-            <p className="text-md font-jost">Instagram</p>
+            Instagram
           </p>
         </div>
         <div className="flex flex-col items-center justify-center ">
