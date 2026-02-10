@@ -15,7 +15,7 @@ export default function Login() {
                 <FaChevronLeft size={20} />
               </Link>
               <Link
-                href="/admin/add-products"
+                href="/admin/login"
                 className="py-2 px-4 bg-[#D77D4C] font-jost rounded-sm text-white "
               >
                 Admin Login

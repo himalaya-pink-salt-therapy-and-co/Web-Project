@@ -26,8 +26,6 @@ export default function SignUp() {
               >
                 <FaChevronLeft size={20} />
               </Link>
-
-              
             </div>
             <p className="text-center font-bold text-6xl font-jost select-none pointer-events-none">
               Sign Up
@@ -147,11 +145,6 @@ export default function SignUp() {
           </div>
         </form>
       </section>
-      <Toast
-        message="Email sent successfully!"
-        duration={4000}
-        type="success"
-      />
     </>
   );
 }

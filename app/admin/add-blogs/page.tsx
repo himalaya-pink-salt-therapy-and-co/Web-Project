@@ -4,61 +4,55 @@ import { useState, useEffect, FormEvent } from "react";
 import { ref, push, update, onValue, remove } from "firebase/database";
 import { database } from "@/firebase";
 import { FaEdit, FaHome, FaPlus, FaTimes, FaTrash } from "react-icons/fa";
-import Toast from "@/app/components/tost"; // make sure path is correct
+import Toast from "@/app/components/tost"; // same toast component as products
 import Link from "next/link";
 
-type Product = {
+type Blog = {
   id?: string;
   title: string;
-  description: string;
-  price: string;
+  excerpt: string;
   image: string;
+  date: string;
 };
 
-export default function AdminProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
+export default function AdminBlogs() {
+  const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(
-    null,
-  );
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
 
-  const [productForm, setProductForm] = useState<Product>({
+  const [blogForm, setBlogForm] = useState<Blog>({
     title: "",
-    description: "",
-    price: "",
+    excerpt: "",
     image: "",
+    date: "",
   });
 
-  // Toast state
-  const [toast, setToast] = useState<{
-    message: string;
-    type: "success" | "error";
-  } | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
-  // Fetch products
+  // Fetch blogs from Firebase
   useEffect(() => {
-    const productsRef = ref(database, "Our-Products");
-    const unsubscribe = onValue(productsRef, (snapshot) => {
+    const blogsRef = ref(database, "Our-Blogs");
+    const unsubscribe = onValue(blogsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const loaded: Product[] = Object.entries(data).map(([key, value]) => ({
+        const loaded: Blog[] = Object.entries(data).map(([key, value]) => ({
           id: key,
-          ...(value as Product),
+          ...(value as Blog),
         }));
-        setProducts(loaded);
+        setBlogs(loaded);
       } else {
-        setProducts([]);
+        setBlogs([]);
       }
     });
     return () => unsubscribe();
   }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setProductForm({ ...productForm, [e.target.name]: e.target.value });
+    setBlogForm({ ...blogForm, [e.target.name]: e.target.value });
   };
 
   const showToast = (message: string, type: "success" | "error") => {
@@ -69,13 +63,7 @@ export default function AdminProducts() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Validate all fields
-    if (
-      !productForm.title ||
-      !productForm.description ||
-      !productForm.price ||
-      !productForm.image
-    ) {
+    if (!blogForm.title || !blogForm.excerpt || !blogForm.image || !blogForm.date) {
       showToast("Please fill in all fields!", "error");
       return;
     }
@@ -83,13 +71,13 @@ export default function AdminProducts() {
     setLoading(true);
     try {
       if (editingId) {
-        await update(ref(database, `Our-Products/${editingId}`), productForm);
-        showToast("Product updated successfully!", "success");
+        await update(ref(database, `Our-Blogs/${editingId}`), blogForm);
+        showToast("Blog updated successfully!", "success");
       } else {
-        await push(ref(database, "Our-Products"), productForm);
-        showToast("Product added successfully!", "success");
+        await push(ref(database, "Our-Blogs"), blogForm);
+        showToast("Blog added successfully!", "success");
       }
-      setProductForm({ title: "", description: "", price: "", image: "" });
+      setBlogForm({ title: "", excerpt: "", image: "", date: "" });
       setEditingId(null);
       setShowForm(false);
     } catch (err) {
@@ -100,14 +88,14 @@ export default function AdminProducts() {
     }
   };
 
-  const handleEdit = (product: Product) => {
-    setProductForm({
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      image: product.image,
+  const handleEdit = (blog: Blog) => {
+    setBlogForm({
+      title: blog.title,
+      excerpt: blog.excerpt,
+      image: blog.image,
+      date: blog.date,
     });
-    setEditingId(product.id || null);
+    setEditingId(blog.id || null);
     setShowForm(true);
   };
 
@@ -118,11 +106,11 @@ export default function AdminProducts() {
 
   const confirmDelete = async (id: string) => {
     try {
-      await remove(ref(database, `Our-Products/${id}`));
-      showToast("Product deleted successfully!", "success");
+      await remove(ref(database, `Our-Blogs/${id}`));
+      showToast("Blog deleted successfully!", "success");
     } catch (err) {
       console.error(err);
-      showToast("Failed to delete product!", "error");
+      showToast("Failed to delete blog!", "error");
     } finally {
       setShowDeleteConfirm(null);
     }
@@ -131,19 +119,16 @@ export default function AdminProducts() {
   const handleAddClick = () => {
     setShowForm(true);
     setEditingId(null);
-    setProductForm({ title: "", description: "", price: "", image: "" });
+    setBlogForm({ title: "", excerpt: "", image: "", date: "" });
   };
 
   return (
     <section className="w-full min-h-screen bg-gray-100 p-8 relative">
       <h1 className="text-2xl font-semibold text-center mb-8 font-jost">
-        Product Catalog
+        Blog Catalog
       </h1>
 
-      {/* Toast */}
-      {toast && (
-        <Toast message={toast.message} type={toast.type} duration={4000} />
-      )}
+      {toast && <Toast message={toast.message} type={toast.type} duration={4000} />}
 
       {/* Form Modal */}
       {showForm && (
@@ -161,38 +146,38 @@ export default function AdminProducts() {
             </button>
 
             <h2 className="text-xl text-center font-jost font-semibold">
-              {editingId ? "Edit Product" : "Add New Product"}
+              {editingId ? "Edit Blog" : "Add New Blog"}
             </h2>
 
             <input
               type="text"
               name="title"
               placeholder="Title"
-              value={productForm.title}
+              value={blogForm.title}
               onChange={handleChange}
               className="border border-gray-300 font-jost p-3 focus:outline-none"
             />
             <textarea
-              name="description"
-              placeholder="Description"
-              value={productForm.description}
+              name="excerpt"
+              placeholder="Excerpt"
+              value={blogForm.excerpt}
               onChange={handleChange}
               rows={4}
               className="border border-gray-300 font-jost p-3 focus:outline-none"
             />
             <input
               type="text"
-              name="price"
-              placeholder="Price"
-              value={productForm.price}
+              name="image"
+              placeholder="Image URL"
+              value={blogForm.image}
               onChange={handleChange}
               className="border border-gray-300 font-jost p-3 focus:outline-none"
             />
             <input
               type="text"
-              name="image"
-              placeholder="Image URL"
-              value={productForm.image}
+              name="date"
+              placeholder="Date (e.g., Feb 10, 2026)"
+              value={blogForm.date}
               onChange={handleChange}
               className="border border-gray-300 font-jost p-3 focus:outline-none"
             />
@@ -202,11 +187,7 @@ export default function AdminProducts() {
               disabled={loading}
               className="bg-[#D77D4C] text-white py-3 rounded-xs hover:opacity-80 transition font-semibold cursor-pointer font-jost"
             >
-              {loading
-                ? "Saving..."
-                : editingId
-                  ? "Update Product"
-                  : "Add Product"}
+              {loading ? "Saving..." : editingId ? "Update Blog" : "Add Blog"}
             </button>
           </form>
         </div>
@@ -217,7 +198,7 @@ export default function AdminProducts() {
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-[#FCFEFD] p-6 shadow-xl w-full max-w-md rounded flex flex-col gap-4">
             <h3 className="text-lg font-semibold font-jost text-center">
-              Are you sure you want to delete this product?
+              Are you sure you want to delete this blog?
             </h3>
             <div className="flex justify-center gap-4">
               <button
@@ -237,46 +218,44 @@ export default function AdminProducts() {
         </div>
       )}
 
-      {/* Product Table */}
+      {/* Blog Table */}
       <div className="grid grid-cols-5 bg-[#D77D4C] text-white text-center font-bold">
         <div className="p-3 font-jost font-light border-r">Image</div>
         <div className="p-3 font-jost font-light border-r">Title</div>
-        <div className="p-3 font-jost font-light border-r">Description</div>
-        <div className="p-3 font-jost font-light border-r">Price</div>
+        <div className="p-3 font-jost font-light border-r">Excerpt</div>
+        <div className="p-3 font-jost font-light border-r">Date</div>
         <div className="p-3 font-jost font-light ">Actions</div>
       </div>
 
       <div className="flex flex-col overflow-hidden">
-        {products.length > 0 ? (
+        {blogs.length > 0 ? (
           <>
-            {products.map((prod) => (
+            {blogs.map((blog) => (
               <div
-                key={prod.id}
-                className="grid grid-cols-5 text-center items-center border-b border-zinc-300 border-l border-r last:border-none transition"
+                key={blog.id}
+                className="grid grid-cols-5 text-center items-center border-b border-zinc-300 border-l border-r last:border-none"
               >
                 <div className="p-3 flex justify-center border-r border-zinc-300">
                   <img
-                    src={prod.image}
-                    alt={prod.title}
+                    src={blog.image}
+                    alt={blog.title}
                     className="w-20 h-20 object-cover rounded"
                   />
                 </div>
-                <div className="p-3 font-jost font-semibold border-zinc-300">
-                  {prod.title}
-                </div>
+                <div className="p-3 font-jost font-semibold border-zinc-300">{blog.title}</div>
                 <div className="p-3 text-start text-sm font-jost border-l border-zinc-300 h-full flex items-center border-r">
-                  {prod.description}
+                  {blog.excerpt}
                 </div>
-                <div className="p-3 font-jost font-bold">Rs. {prod.price}</div>
+                <div className="p-3 font-jost font-bold">{blog.date}</div>
                 <div className="p-3 flex justify-center gap-2 border-l h-full border-zinc-300 py-8">
                   <button
-                    onClick={() => handleEdit(prod)}
+                    onClick={() => handleEdit(blog)}
                     className="bg-[#D77D4C] text-white py-1 px-3 rounded hover:opacity-80 flex items-center gap-1 cursor-pointer"
                   >
                     <FaEdit /> Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(prod.id)}
+                    onClick={() => handleDelete(blog.id)}
                     className="bg-red-500 text-white py-1 px-3 rounded hover:opacity-80 flex items-center gap-1 cursor-pointer"
                   >
                     <FaTrash /> Delete
@@ -291,7 +270,7 @@ export default function AdminProducts() {
                   onClick={handleAddClick}
                   className="bg-[#D77D4C] text-white py-2 px-4 rounded-md hover:opacity-80 transition flex items-center gap-2 font-jost cursor-pointer"
                 >
-                  <FaPlus size={15} /> Add New Product
+                  <FaPlus size={15} /> Add New Blog
                 </button>
               </div>
             </div>
@@ -303,7 +282,7 @@ export default function AdminProducts() {
                 onClick={handleAddClick}
                 className="bg-[#D77D4C] text-white py-2 px-4 rounded-lg hover:opacity-80 transition flex items-center gap-2 cursor-pointer"
               >
-                <FaPlus /> Create
+                <FaPlus /> Create Blog
               </button>
             </div>
           </div>
@@ -311,23 +290,24 @@ export default function AdminProducts() {
       </div>
       <main className="flex gap-4 items-center justify-center">
         <div className="py-2 flex justify-center">
-          <Link
-            href="/admin/add-blogs"
-            className="flex items-center gap-2 text-[#D77D4C] font-jost"
-          >
-            <FaPlus size={15} />
-            Add Blogs
-          </Link>
-        </div>
-        <div className="py-2 flex justify-center">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-[#D77D4C] font-jost"
-          >
-            <FaHome size={15} />
-            Go to Home
-          </Link>
-        </div>
+        <Link
+          href="/admin/add-products"
+          className="flex items-center gap-2 text-[#D77D4C] font-jost"
+        >
+          <FaPlus size={15} />
+          Add Products
+        </Link>
+        
+      </div><div className="py-2 flex justify-center">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-[#D77D4C] font-jost"
+        >
+          <FaHome size={15} />
+          Go to Home
+        </Link>
+        
+      </div>
       </main>
     </section>
   );

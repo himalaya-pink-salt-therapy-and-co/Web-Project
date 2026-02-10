@@ -1,7 +1,7 @@
 export default function Contactus() {
   return (
     <>
-      <main className="bg-[#FCFEFD] w-full border border-b border-zinc-200 mb-2">
+      <main className="bg-[#FCFEFD] w-full border border-b border-zinc-200 mb-2 rounded-md">
         {" "}
         <section className="w-[85%] mx-auto py-16 flex justify-around gap-4 ">
           <div className="w-[50%] flex flex-col justify-start py-4">

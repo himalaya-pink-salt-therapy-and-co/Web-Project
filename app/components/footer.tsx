@@ -8,10 +8,7 @@ export default function Footer() {
         <div className="w-[30%]">
           <p className="font-bold text-2xl font-jost">About Us</p>
           <p className="font-jost ">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-            obcaecati sed illo consectetur non vero, quis eum expedita rerum
-            tenetur maiores, sit voluptatem inventore magni minima recusandae
-            mollitia omnis fugiat.
+            Himalaya Pink Salt Therapy & Co is your trusted source for premium Himalayan pink salt bricks, bringing the ancient healing traditions of the Himalayas into modern wellness spaces. 
           </p>
         </div>
         <div className="rlex flex-col space-y-2">

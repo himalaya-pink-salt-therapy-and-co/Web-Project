@@ -3,7 +3,6 @@ import Nav from "./components/nav";
 import HeroSection from "./components/herosection";
 import Products from "./components/product";
 import Footer from "./components/footer";
-import Contactus from "./components/contactus";
 
 export default function Home() {
   return (
@@ -11,7 +10,6 @@ export default function Home() {
       <Nav />
       <HeroSection />
       <Products />
-      <Contactus />
       <Footer />
     </>
   );
