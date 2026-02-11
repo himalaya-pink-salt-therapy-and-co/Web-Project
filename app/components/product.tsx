@@ -63,11 +63,11 @@ export default function Products() {
       )}
 
       {products.length > 0 ? (
-        <section className="w-[85%] mx-auto py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <section className="w-[85%] mx-auto py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
           {products.map((product) => (
             <div
               key={product.id}
-              className="flex flex-col bg-white border border-zinc-200 overflow-hidden"
+              className="flex flex-col bg-white border border-zinc-200 overflow-hidden rounded-xl cursor-pointer"
             >
               <div className="w-full h-80">
                 <img
