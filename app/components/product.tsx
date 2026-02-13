@@ -97,14 +97,14 @@ export default function Products() {
           ))}
         </section>
       ) : (
-        <section className="py-20 flex flex-col items-center justify-center gap-6">
+        <section className="py-5 md:py-20 flex flex-col items-center justify-center gap-6">
           <div className="border border-zinc-200 rounded-full p-6 flex items-center justify-center">
             <FaStore size={80} className="text-[#D77D4C]" />
           </div>
           <p className="text-center font-jost text-4xl sm:text-5xl font-bold text-[#D77D4C]">
             Store Is Empty
           </p>
-          <p className="text-center font-jost text-lg text-zinc-600 max-w-md">
+          <p className="text-center font-jost text-sm px-2 md:text-lg text-zinc-600 max-w-md">
             Currently, there are no products available. Please check back later
             or contact us for more information.
           </p>

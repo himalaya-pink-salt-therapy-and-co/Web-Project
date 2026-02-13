@@ -2,7 +2,7 @@ export default function HeroSection() {
   return (
     <>
       <section className="w-full pt-20">
-        <div className="w-full h-210 relative">
+        <div className="w-full h-80 md:h-210 relative">
           <img
             className="w-full h-full"
             src="/pic2.png"
