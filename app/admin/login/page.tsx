@@ -58,7 +58,7 @@ export default function AdminLogin() {
         <div className="w-[50%] flex flex-col space-y-4 px-10 py-8">
           <div className="flex mb-18 items-center justify-between">
             <Link
-              href="/login"
+              href="/"
               className="w-8 h-8 border border-zinc-200 rounded-full flex items-center justify-center"
             >
               <BiChevronLeft size={20} />

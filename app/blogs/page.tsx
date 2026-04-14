@@ -20,6 +20,7 @@ import { BiLoader } from "react-icons/bi";
 export default function Blogs() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [modalPost, setModalPost] = useState<BlogPost | null>(null);
 
   useEffect(() => {
     const blogsRef = ref(database, "Our-Blogs");
@@ -57,7 +58,7 @@ export default function Blogs() {
       <Nav />
       <main className="w-full bg-[#F5F5F5] py-13">
         {blogPosts.length > 0 ? (
-          <section className="w-[85%] mx-auto py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <section className="w-[85%] mx-auto py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:grid-cols-4 gap-8">
             {blogPosts.map((post) => (
               <div
                 key={post.id}
@@ -81,7 +82,10 @@ export default function Blogs() {
                   <p className="text-zinc-700 text-base line-clamp-3">
                     {post.excerpt}
                   </p>
-                  <button className="mt-2 w-full bg-[#D77D4C] text-white py-2 text-sm hover:opacity-80 transition font-jost rounded-sm cursor-pointer">
+                  <button
+                    className="mt-2 w-full bg-[#D77D4C] text-white py-2 text-sm hover:opacity-80 transition font-jost rounded-sm cursor-pointer"
+                    onClick={() => setModalPost(post)}
+                  >
                     Read More
                   </button>
                 </div>
@@ -100,6 +104,42 @@ export default function Blogs() {
               Currently, there are no blogs published. Please check back later.
             </p>
           </section>
+        )}
+
+        {/* Modal for Read More */}
+        {modalPost && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+            onClick={() => setModalPost(null)}
+          >
+            <div
+              className="relative bg-white rounded-lg shadow-xl max-w-lg w-[90vw] mx-4 p-6 flex flex-col gap-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Mobile close button */}
+              <button
+                className="absolute top-3 right-3 md:hidden text-gray-500 hover:text-gray-800 text-2xl"
+                onClick={() => setModalPost(null)}
+                aria-label="Close"
+              >
+                &times;
+              </button>
+              <img
+                src={modalPost.image}
+                alt={modalPost.title}
+                className="w-full h-56 object-cover rounded mb-2"
+              />
+              <h2 className="font-jost font-bold text-2xl mb-1 text-center">
+                {modalPost.title}
+              </h2>
+              <p className="text-zinc-600 text-center text-sm mb-2">
+                {modalPost.date}
+              </p>
+              <p className="text-zinc-700 text-base whitespace-pre-line text-center">
+                {modalPost.excerpt}
+              </p>
+            </div>
+          </div>
         )}
       </main>
       <Footer />

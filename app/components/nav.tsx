@@ -64,29 +64,16 @@ export default function Nav() {
           <TiUser className="text-3xl" />
           <div className="absolute top-full right-0 mt-2 w-40 bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
             <Link
-              href="/login"
+              href="/admin/login"
               className="block px-4 py-2 text-sm hover:bg-zinc-100"
             >
-              Login
+              Admin Login
             </Link>
-            <Link
-              href="/sign-up"
-              className="block px-4 py-2 text-sm hover:bg-zinc-100"
-            >
-              Sign Up
-            </Link>
+           
           </div>
         </div>
 
-        <Link
-          href="/cart"
-          className="mr-2 md:flex items-center justify-center relative cursor-pointer hidden"
-        >
-          <div className="bg-[#D77D4C] text-white absolute text-xs px-1.5 py-0.5 rounded-full -left-1 -top-1">
-            0
-          </div>
-          <FaBucket className="text-2xl" />
-        </Link>
+       
         <button onClick={() => setOpen(!open)} className="md:hidden">
           <CgMenuOreos size={25} />
         </button>
