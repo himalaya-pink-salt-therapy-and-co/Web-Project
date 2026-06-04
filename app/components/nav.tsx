@@ -6,10 +6,12 @@ import { useState } from "react";
 import { CgMenuOreos } from "react-icons/cg";
 import { FaBucket } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
+import { RiAdminLine } from "react-icons/ri";
 import { TiUser } from "react-icons/ti";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+const [userOpen, setUserOpen] = useState(false);
   const pathname = usePathname();
 
   const linkClass = (path: string) =>
@@ -60,13 +62,14 @@ export default function Nav() {
       </div>
 
       <div className="flex items-center gap-4 font-jost text-xl">
-        <div className="relative group flex items-center justify-center pl-2 cursor-pointer py-2">
+        <div className="relative flex items-center justify-center pl-2 cursor-pointer py-2" onClick={() => setUserOpen(!userOpen)}>
           <TiUser className="text-3xl" />
-          <div className="absolute top-full right-0 mt-2 w-40 bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <div className={`absolute border border-zinc-200 top-full right-0 mt-2 w-40 bg-white shadow-lg ${userOpen ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-200 z-50`}>
             <Link
               href="/admin/login"
-              className="block px-4 py-2 text-sm hover:bg-zinc-100"
+              className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-zinc-100"
             >
+              <RiAdminLine />
               Admin Login
             </Link>
            

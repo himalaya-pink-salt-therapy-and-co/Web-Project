@@ -40,10 +40,10 @@ export default function Footer() {
 
   return (
     <>
-      <section className="flex flex-col gap-4 md:grid md:grid-cols-3 justify-between px-6 md:px-20 mx-auto py-16 ">
+      <section className="flex flex-col lg:gap-4 gap-2 md:grid grid-cols-1 lg:grid-cols-3 justify-between px-2 px-4 md:px-20 mx-auto py-16 ">
         <div className="w-full">
-          <p className="font-bold text-2xl font-jost">About Us</p>
-          <p className="font-jost ">
+          <p className="font-bold text-xl xl:text-2xl font-jost">About Us</p>
+          <p className="font-jost text-sm xl:text-lg">
             Himalaya Pink Salt Therapy & Co is your trusted source for premium
             Himalayan pink salt bricks, bringing the ancient healing traditions
             of the Himalayas into modern wellness spaces.
@@ -52,14 +52,14 @@ export default function Footer() {
 
         <div className="flex ">
           <div className="flex flex-col space-y-2 ">
-            <p className="font-bold text-2xl font-jost">Usefull Links</p>
+            <p className="font-bold text-xl xl:text-2xl font-jost">Usefull Links</p>
             <div className="flex justify-between">
-              <p className="flex items-center gap-2 cursor-pointer text-md font-jost">
+              <p className="flex items-center gap-2 cursor-pointer text-sm xl:text-md font-jost">
                 <FaPhone size={18} />
                 +92 123 456 789
               </p>
             </div>
-            <p className="flex items-center gap-2 cursor-pointer font-jost text-md">
+            <p className="flex items-center gap-2 cursor-pointer font-jost text-sm md:text-md">
               <RiInstagramFill size={20} />
               Instagram
             </p>
@@ -67,11 +67,11 @@ export default function Footer() {
         </div>
 
         {/* FORM */}
-        <div className="flex flex-col md:items-center justify-center border border-zinc-200 py-4 px-4">
-          <div className="text-2xl font-bold font-jost text-center">
+        <div className="flex flex-col md:items-center justify-center border border-zinc-200 py-4 px-2 md:px-4">
+          <div className="text-xl xl:text-2xl font-bold font-jost text-center">
             Stay Connected
           </div>
-          <div className="text-sm font-jost text-center">
+          <div className="text-sm xl:text-lg font-jost text-center">
             Subscribe for latest updates and exclusive offers on our products
             and purchase.
           </div>
@@ -79,7 +79,7 @@ export default function Footer() {
           <form
             ref={formRef}
             onSubmit={sendEmail}
-            className="flex items-center py-6 w-full text-sm md:text-md"
+            className="flex flex-col xl:flex-row gap-2 xl:gap-0 items-center py-6 w-full text-sm md:text-md"
           >
             <input
               type="email"
@@ -91,7 +91,7 @@ export default function Footer() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="font-jost p-3 md:px-6 bg-[#e27e49] md:py-2.5 text-sm md:text-xl cursor-pointer hover:bg-black hover:text-white transition-all duration-300 hover:border-zinc-800 text-white disabled:opacity-60 disabled:cursor-not-allowed"
+              className="font-jost p-3 xl:px-6 bg-[#e27e49] md:py-2.5 text-sm xl:text-xl cursor-pointer hover:bg-black hover:text-white transition-all duration-300 hover:border-zinc-800 text-white disabled:opacity-60 disabled:cursor-not-allowed w-full xl:w-auto"
             >
               {status === "sending" ? "Subscribing..." : "Subscribe"}
             </button>

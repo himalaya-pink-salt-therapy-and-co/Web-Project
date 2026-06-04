@@ -53,9 +53,9 @@ export default function AdminLogin() {
   };
 
   return (
-    <section className="w-full h-screen flex items-center justify-center relative">
-      <form className="bg-[#FCFEFD] w-[70%] overflow-hidden mx-auto shadow rounded-md border border-zinc-200 flex justify-between">
-        <div className="w-[50%] flex flex-col space-y-4 px-10 py-8">
+    <section className="w-full h-screen flex items-center justify-center relative px-2 lg:px-10 md:px-20">
+      <form className="bg-[#FCFEFD] xl:w-[70%] w-full overflow-hidden mx-auto shadow  border border-zinc-200 flex justify-between">
+        <div className="xl:w-[50%] w-full flex flex-col space-y-4 px-4 xl:px-10 py-8">
           <div className="flex mb-18 items-center justify-between">
             <Link
               href="/"
@@ -65,16 +65,16 @@ export default function AdminLogin() {
             </Link>
           </div>
 
-          <p className="text-center font-bold text-6xl font-jost">Admins</p>
-          <p className="text-center text-lg font-jost">
+          <p className="text-center font-bold text-3xl md:text-6xl font-jost">Admins</p>
+          <p className="text-center text-sm md:text-lg font-jost">
             Manage content, users, and system settings securely from one place.
           </p>
 
           <div className="flex flex-col space-y-2">
-            <label className="font-jost text-lg">Email</label>
+            <label className="font-jost text-sm md:text-lg">Email</label>
             <input
               type="email"
-              className="w-full border border-zinc-200 font-jost text-lg px-2 py-3 focus:outline-none"
+              className="w-full border border-zinc-200 font-jost text-sm md:text-lg px-2 py-3 focus:outline-none"
               placeholder="Enter Your Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -82,11 +82,11 @@ export default function AdminLogin() {
           </div>
 
           <div className="flex flex-col space-y-2 relative ">
-            <label className="font-jost text-lg">Password</label>
+            <label className="font-jost text-sm md:text-lg">Password</label>
             <div className="flex items-center border border-zinc-200">
               <input
                 type={showPassword ? "text" : "password"}
-                className="w-full  font-jost text-lg px-2 py-3 focus:outline-none pr-10"
+                className="w-full  font-jost text-sm md:text-lg px-2 py-3 focus:outline-none pr-10"
                 placeholder="Enter Your Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -103,22 +103,14 @@ export default function AdminLogin() {
           <button
             type="button"
             onClick={handleLogin}
-            className="mt-2 w-full bg-[#D77D4C] text-white py-3.5 text-lg hover:opacity-80 transition font-jost cursor-pointer"
+            className="mt-2 w-full bg-[#D77D4C] text-white py-3.5 text-sm md:text-lg hover:opacity-80 transition font-jost cursor-pointer"
           >
             Sign In
           </button>
 
-          <div className="flex justify-between">
-            <Link
-              href="/forget-password"
-              className="font-semibold font-jost text-lg pb-20"
-            >
-              Forget Password?
-            </Link>
-          </div>
         </div>
 
-        <div className="w-[50%] select-none pointer-events-none">
+        <div className="xl:w-[50%] hidden xl:block select-none pointer-events-none">
           <img src="/admin.jpg" alt="" className="w-full h-full" />
         </div>
       </form>

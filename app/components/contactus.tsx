@@ -63,12 +63,12 @@ export default function Contactus() {
   return (
     <>
       <main className="bg-[#FCFEFD] w-full border border-b border-zinc-200 mb-2 rounded-md">
-        <section className="w-[85%] mx-auto py-16 flex justify-around gap-4">
-          <div className="w-[50%] flex flex-col justify-start py-4">
-            <p className="text-5xl font-bold font-jost text-center">
+        <section className="w-[85%] mx-auto py-16 flex flex-col md:flex-row justify-around gap-4">
+          <div className="md:w-[50%] flex flex-col md:justify-start justify-center py-4">
+            <p className="text-3xl md:text-5xl font-bold font-jost text-center">
               Contact Us
             </p>
-            <p className="text-lg font-jost text-center w-full">
+            <p className="md:text-lg font-jost text-center w-full">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni
               ducimus voluptates adipisci odit debitis libero necessitatibus
               delectus autem possimus ipsa, corporis dolorum iusto obcaecati
@@ -80,7 +80,7 @@ export default function Contactus() {
           <form
             ref={formRef}
             onSubmit={sendEmail}
-            className="w-[50%] flex items-center pl-10 py-6 flex-col space-y-6"
+            className="md:w-[50%] flex items-center pl-2 md:pl-10 py-6 flex-col space-y-6"
           >
             <div className="flex items-center justify-between w-full gap-10">
               <input

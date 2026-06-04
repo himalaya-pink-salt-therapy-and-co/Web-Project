@@ -9,10 +9,11 @@ import { auth } from "@/firebase";
 import { FaEdit, FaHome, FaPlus, FaTimes, FaTrash } from "react-icons/fa";
 import Toast from "@/app/components/tost";
 import Link from "next/link";
-import { LuGitBranchPlus } from "react-icons/lu";
-import { FaEyeSlash } from "react-icons/fa6";
 import { IoEyeSharp } from "react-icons/io5";
 import { FiChevronsLeft } from "react-icons/fi";
+import { LuGitBranchPlus } from "react-icons/lu";
+import { FaEyeSlash } from "react-icons/fa6";
+import DashboardBar from "@/app/components/dashboardbar";
 
 type Product = {
   id?: string;
@@ -299,7 +300,9 @@ export default function AdminProducts() {
 
   return (
     <AdminProtectedRoute>
-      <section className="w-full min-h-screen bg-gray-100 p-8 relative">
+      <div className="flex w-full min-h-screen bg-gray-100">
+        <DashboardBar />
+        <section className="flex-1 px-2 md:px-8 py-2 relative overflow-x-hidden h-screen overflow-y-auto">
         <div
           ref={adminPanelRef}
           className="border-l border-zinc-200 w-110 py-8 px-4 absolute bg-white top-0 -right-130
@@ -581,109 +584,100 @@ export default function AdminProducts() {
           </div>
         )}
 
+
         {/* Product Table */}
-        <div className="grid grid-cols-5 bg-[#D77D4C] text-white text-center font-bold">
-          <div className="p-3 font-jost font-light border-r">Image</div>
-          <div className="p-3 font-jost font-light border-r">Title</div>
-          <div className="p-3 font-jost font-light border-r">Description</div>
-          <div className="p-3 font-jost font-light border-r">Price</div>
-          <div className="p-3 font-jost font-light ">Actions</div>
-        </div>
-
-        <div className="flex flex-col overflow-hidden">
-          {products.length > 0 ? (
-            <>
-              {products.map((prod) => (
-                <div
-                  key={prod.id}
-                  className="grid grid-cols-5 text-center items-center border-b border-zinc-300 border-l border-r last:border-none transition"
-                >
-                  <div className="p-3 flex justify-center border-r border-zinc-300">
-                    <img
-                      src={prod.image}
-                      alt={prod.title}
-                      className="w-20 h-20 object-cover rounded"
-                    />
-                  </div>
-                  <div className="p-3 font-jost font-semibold border-zinc-300">
-                    {prod.title}
-                  </div>
-                  <div className="p-3 text-start text-sm font-jost border-l border-zinc-300 h-full flex items-center border-r">
-                    {prod.description}
-                  </div>
-                  <div className="p-3 font-jost font-bold">
-                    Rs. {prod.price}
-                  </div>
-                  <div className="p-3 flex justify-center gap-2 border-l h-full border-zinc-300 py-8">
-                    <button
-                      onClick={() => handleEdit(prod)}
-                      className="bg-[#D77D4C] text-white py-1 px-3 rounded hover:opacity-80 flex items-center gap-1 cursor-pointer"
-                    >
-                      <FaEdit /> Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(prod.id)}
-                      className="bg-red-500 text-white py-1 px-3 rounded hover:opacity-80 flex items-center gap-1 cursor-pointer"
-                    >
-                      <FaTrash /> Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-
-              <div className="grid grid-cols-5 text-center items-center ">
-                <div className="p-4 col-span-5 flex justify-center items-center text-gray-700 gap-4">
-                  <button
-                    onClick={handleAddClick}
-                    className="bg-[#D77D4C] text-white py-2 px-4 rounded-md hover:opacity-80 transition flex items-center gap-2 font-jost cursor-pointer"
+        <div className="overflow-x-auto w-full shadow-sm border border-zinc-200">
+          <table className="min-w-[800px] w-full border-collapse">
+            <thead>
+              <tr className="bg-[#D77D4C] text-white">
+                <th className="p-4 font-jost font-medium text-left border-r border-[#c06a38]">Image</th>
+                <th className="p-4 font-jost font-medium text-left border-r border-[#c06a38]">Title</th>
+                <th className="p-4 font-jost font-medium text-left border-r border-[#c06a38]">Description</th>
+                <th className="p-4 font-jost font-medium text-left border-r border-[#c06a38]">Price</th>
+                <th className="p-4 font-jost font-medium text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.length > 0 ? (
+                products.map((prod, index) => (
+                  <tr
+                    key={prod.id}
+                    className={`border-b border-zinc-200 hover:bg-orange-50 transition-colors duration-150 ${index % 2 === 0 ? "bg-white" : "bg-zinc-50"
+                      }`}
                   >
-                    <FaPlus size={15} /> Add New Product
-                  </button>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="grid grid-cols-5 text-center items-center border-b border-l border-r border-zinc-200 last:border-none">
-              <div className="p-6 col-span-5 flex flex-col items-center gap-4 text-gray-500 font-jost border-b border-zinc-300 border-x">
-                <button
-                  onClick={handleAddClick}
-                  className="bg-[#D77D4C] text-white py-2 px-4 rounded-lg hover:opacity-80 transition flex items-center gap-2 cursor-pointer"
-                >
-                  <FaPlus /> Create
-                </button>
-              </div>
-            </div>
-          )}
+                    <td className="p-4 border-r border-zinc-200">
+                      <img
+                        src={prod.image}
+                        alt={prod.title}
+                        className="w-16 h-16 object-cover rounded-lg shadow-sm"
+                      />
+                    </td>
+                    <td className="p-4 border-r border-zinc-200">
+                      <span className="font-jost font-semibold text-zinc-800">
+                        {prod.title}
+                      </span>
+                    </td>
+                    <td className="p-4 border-r border-zinc-200 max-w-xs">
+                      <p className="text-sm font-jost text-zinc-600 line-clamp-2">
+                        {prod.description}
+                      </p>
+                    </td>
+                    <td className="p-4 border-r border-zinc-200">
+                      <span className="font-jost font-bold text-[#D77D4C]">
+                        Rs. {prod.price}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex justify-center items-center gap-2">
+                        <button
+                          onClick={() => handleEdit(prod)}
+                          className="bg-[#D77D4C] text-white py-1.5 px-3 rounded-md hover:bg-[#c06a38] transition-colors flex items-center gap-1.5 cursor-pointer text-sm font-jost whitespace-nowrap shadow-sm"
+                        >
+                          <FaEdit size={12} /> Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(prod.id)}
+                          className="bg-red-500 text-white py-1.5 px-3 rounded-md hover:bg-red-600 transition-colors flex items-center gap-1.5 cursor-pointer text-sm font-jost whitespace-nowrap shadow-sm"
+                        >
+                          <FaTrash size={12} /> Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="p-12 text-center">
+                    <div className="flex flex-col items-center gap-2 text-zinc-400">
+                      <FaTrash size={32} className="opacity-20" />
+                      <p className="font-jost text-sm">No products found</p>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-        <main className="flex gap-4 items-center justify-center mt-4">
-          <div className="py-2 flex justify-center">
-            <Link
-              href="/admin/add-blogs"
-              className="flex items-center gap-2 text-[#D77D4C] font-jost"
-            >
-              <FaPlus size={15} />
-              Add Blogs
-            </Link>
-          </div>
-          <div className="py-2 flex justify-center">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-[#D77D4C] font-jost"
-            >
-              <FaHome size={15} />
-              Go to Home
-            </Link>
-          </div>
+
+        {/* Add and Admin Buttons */}
+        <div className="flex justify-center items-center py-5 gap-4">
+          <button
+            onClick={handleAddClick}
+            className="bg-[#D77D4C] text-white py-2.5 px-6 rounded-md hover:bg-[#c06a38] transition-colors flex items-center gap-2 font-jost shadow-sm cursor-pointer"
+          >
+            <FaPlus size={13} /> Add New Product
+          </button>
+          
           <button
             type="button"
             onClick={openAdminPanel}
-            className="flex items-center gap-2 text-[#D77D4C] font-jost cursor-pointer"
+            className="bg-white border border-[#D77D4C] text-[#D77D4C] py-2.5 px-6 rounded-md hover:bg-orange-50 transition-colors flex items-center gap-2 font-jost shadow-sm cursor-pointer"
           >
-            <LuGitBranchPlus size={15} />
-            Admins
+            <FaPlus size={13} /> Admins
           </button>
-        </main>
+        </div>
       </section>
+      </div>
     </AdminProtectedRoute>
   );
 }

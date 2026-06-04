@@ -6,12 +6,17 @@ import { ref, push, update, onValue, remove } from "firebase/database";
 import { database } from "@/firebase";
 import { FaEdit, FaHome, FaPlus, FaTimes, FaTrash } from "react-icons/fa";
 import Toast from "@/app/components/tost"; // same toast component as products
-import Link from "next/link";
+import DashboardBar from "@/app/components/dashboardbar";
+import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
+
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 type Blog = {
   id?: string;
   title: string;
   excerpt: string;
+  content?: string;
   image: string;
   date: string;
 };
@@ -28,6 +33,7 @@ export default function AdminBlogs() {
   const [blogForm, setBlogForm] = useState<Blog>({
     title: "",
     excerpt: "",
+    content: "",
     image: "",
     date: "",
   });
@@ -88,7 +94,7 @@ export default function AdminBlogs() {
         await push(ref(database, "Our-Blogs"), blogForm);
         showToast("Blog added successfully!", "success");
       }
-      setBlogForm({ title: "", excerpt: "", image: "", date: "" });
+      setBlogForm({ title: "", excerpt: "", content: "", image: "", date: "" });
       setEditingId(null);
       setShowForm(false);
     } catch (err) {
@@ -103,6 +109,7 @@ export default function AdminBlogs() {
     setBlogForm({
       title: blog.title,
       excerpt: blog.excerpt,
+      content: blog.content || "",
       image: blog.image,
       date: blog.date,
     });
@@ -130,12 +137,14 @@ export default function AdminBlogs() {
   const handleAddClick = () => {
     setShowForm(true);
     setEditingId(null);
-    setBlogForm({ title: "", excerpt: "", image: "", date: "" });
+    setBlogForm({ title: "", excerpt: "", content: "", image: "", date: "" });
   };
 
   return (
     <AdminProtectedRoute>
-      <section className="w-full min-h-screen bg-gray-100 p-8 relative">
+      <div className="flex w-full min-h-screen bg-gray-100">
+        <DashboardBar />
+        <section className="flex-1 px-2 md:px-8 py-4 relative h-screen overflow-y-auto">
         <h1 className="text-2xl font-semibold text-center mb-8 font-jost">
           Blog Catalog
         </h1>
@@ -173,12 +182,21 @@ export default function AdminBlogs() {
               />
               <textarea
                 name="excerpt"
-                placeholder="Excerpt"
+                placeholder="Short Excerpt (Preview)"
                 value={blogForm.excerpt}
                 onChange={handleChange}
-                rows={4}
+                rows={2}
                 className="border border-gray-300 font-jost p-3 focus:outline-none"
               />
+              <div className="bg-white">
+                <ReactQuill
+                  theme="snow"
+                  value={blogForm.content || ""}
+                  onChange={(val) => setBlogForm({ ...blogForm, content: val })}
+                  placeholder="Write full blog content here..."
+                  className="font-jost"
+                />
+              </div>
               <input
                 type="text"
                 name="image"
@@ -231,100 +249,91 @@ export default function AdminBlogs() {
             </div>
           </div>
         )}
-
         {/* Blog Table */}
-        <div className="grid grid-cols-5 bg-[#D77D4C] text-white text-center font-bold">
-          <div className="p-3 font-jost font-light border-r">Image</div>
-          <div className="p-3 font-jost font-light border-r">Title</div>
-          <div className="p-3 font-jost font-light border-r">Excerpt</div>
-          <div className="p-3 font-jost font-light border-r">Date</div>
-          <div className="p-3 font-jost font-light ">Actions</div>
-        </div>
-
-        <div className="flex flex-col overflow-hidden">
-          {blogs.length > 0 ? (
-            <>
-              {blogs.map((blog) => (
-                <div
-                  key={blog.id}
-                  className="grid grid-cols-5 text-center items-center border-b border-zinc-300 border-l border-r last:border-none"
-                >
-                  <div className="p-3 flex justify-center border-r border-zinc-300">
-                    <img
-                      src={blog.image}
-                      alt={blog.title}
-                      className="w-20 h-20 object-cover rounded"
-                    />
-                  </div>
-                  <div className="p-3 font-jost font-semibold border-zinc-300">
-                    {blog.title}
-                  </div>
-                  <div className="p-3 text-start text-sm font-jost border-l border-zinc-300 h-full flex items-center border-r">
-                    {blog.excerpt}
-                  </div>
-                  <div className="p-3 font-jost font-bold">{blog.date}</div>
-                  <div className="p-3 flex justify-center gap-2 border-l h-full border-zinc-300 py-8">
-                    <button
-                      onClick={() => handleEdit(blog)}
-                      className="bg-[#D77D4C] text-white py-1 px-3 rounded hover:opacity-80 flex items-center gap-1 cursor-pointer"
-                    >
-                      <FaEdit /> Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(blog.id)}
-                      className="bg-red-500 text-white py-1 px-3 rounded hover:opacity-80 flex items-center gap-1 cursor-pointer"
-                    >
-                      <FaTrash /> Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-
-              <div className="grid grid-cols-5 text-center items-center ">
-                <div className="p-4 col-span-5 flex justify-center items-center text-gray-700 gap-4">
-                  <button
-                    onClick={handleAddClick}
-                    className="bg-[#D77D4C] text-white py-2 px-4 rounded-md hover:opacity-80 transition flex items-center gap-2 font-jost cursor-pointer"
+        <div className="overflow-x-auto w-full shadow-sm border border-zinc-200">
+          <table className="min-w-[800px] w-full border-collapse">
+            <thead>
+              <tr className="bg-[#D77D4C] text-white">
+                <th className="p-4 font-jost font-medium text-left border-r border-[#c06a38]">Image</th>
+                <th className="p-4 font-jost font-medium text-left border-r border-[#c06a38]">Title</th>
+                <th className="p-4 font-jost font-medium text-left border-r border-[#c06a38]">Excerpt</th>
+                <th className="p-4 font-jost font-medium text-left border-r border-[#c06a38]">Date</th>
+                <th className="p-4 font-jost font-medium text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {blogs.length > 0 ? (
+                blogs.map((blog, index) => (
+                  <tr
+                    key={blog.id}
+                    className={`border-b border-zinc-200 hover:bg-orange-50 transition-colors duration-150 ${index % 2 === 0 ? "bg-white" : "bg-zinc-50"
+                      }`}
                   >
-                    <FaPlus size={15} /> Add New Blog
-                  </button>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="grid grid-cols-5 text-center items-center border-b border-l border-r border-zinc-200 last:border-none">
-              <div className="p-6 col-span-5 flex flex-col items-center gap-4 text-gray-500 font-jost border-b border-zinc-300 border-x">
-                <button
-                  onClick={handleAddClick}
-                  className="bg-[#D77D4C] text-white py-2 px-4 rounded-lg hover:opacity-80 transition flex items-center gap-2 cursor-pointer"
-                >
-                  <FaPlus /> Create Blog
-                </button>
-              </div>
-            </div>
-          )}
+                    <td className="p-4 border-r border-zinc-200">
+                      <img
+                        src={blog.image}
+                        alt={blog.title}
+                        className="w-16 h-16 object-cover rounded-lg shadow-sm"
+                      />
+                    </td>
+                    <td className="p-4 border-r border-zinc-200">
+                      <span className="font-jost font-semibold text-zinc-800">
+                        {blog.title}
+                      </span>
+                    </td>
+                    <td className="p-4 border-r border-zinc-200 max-w-xs">
+                      <p className="text-sm font-jost text-zinc-600 line-clamp-2">
+                        {blog.excerpt}
+                      </p>
+                    </td>
+                    <td className="p-4 border-r border-zinc-200">
+                      <span className="font-jost font-medium text-[#D77D4C] whitespace-nowrap">
+                        {blog.date}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex justify-center items-center gap-2">
+                        <button
+                          onClick={() => handleEdit(blog)}
+                          className="bg-[#D77D4C] text-white py-1.5 px-3 rounded-md hover:bg-[#c06a38] transition-colors flex items-center gap-1.5 cursor-pointer text-sm font-jost whitespace-nowrap shadow-sm"
+                        >
+                          <FaEdit size={12} /> Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(blog.id)}
+                          className="bg-red-500 text-white py-1.5 px-3 rounded-md hover:bg-red-600 transition-colors flex items-center gap-1.5 cursor-pointer text-sm font-jost whitespace-nowrap shadow-sm"
+                        >
+                          <FaTrash size={12} /> Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="p-12 text-center">
+                    <div className="flex flex-col items-center gap-2 text-zinc-400">
+                      <FaTrash size={32} className="opacity-20" />
+                      <p className="font-jost text-sm">No blogs found</p>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-        <main className="flex gap-4 items-center justify-center">
-          <div className="py-2 flex justify-center">
-            <Link
-              href="/admin/add-products"
-              className="flex items-center gap-2 text-[#D77D4C] font-jost"
-            >
-              <FaPlus size={15} />
-              Add Products
-            </Link>
-          </div>
-          <div className="py-2 flex justify-center">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-[#D77D4C] font-jost"
-            >
-              <FaHome size={15} />
-              Go to Home
-            </Link>
-          </div>
-        </main>
-      </section>
+
+        {/* Add Button - outside scroll */}
+        <div className="flex justify-center items-center py-5">
+          <button
+            onClick={handleAddClick}
+            className="bg-[#D77D4C] text-white py-2.5 px-6 rounded-md hover:bg-[#c06a38] transition-colors flex items-center gap-2 font-jost shadow-sm cursor-pointer"
+          >
+            <FaPlus size={13} /> Add New Blog
+          </button>
+        </div>
+        </section>
+      </div>
     </AdminProtectedRoute>
   );
 }
