@@ -28,8 +28,8 @@ export default function AdminProtectedRoute({
         const now = Date.now();
         if (tokenData) {
           const { timestamp } = JSON.parse(tokenData);
-          // 5 minutes = 300000 ms
-          if (now - timestamp > 300000) {
+          // 2 hours = 7200000 ms
+          if (now - timestamp > 7200000) {
             // Token expired
             signOut(auth);
             sessionStorage.removeItem("admin_token");
@@ -56,7 +56,7 @@ export default function AdminProtectedRoute({
       const now = Date.now();
       if (tokenData) {
         const { timestamp } = JSON.parse(tokenData);
-        if (now - timestamp > 300000) {
+        if (now - timestamp > 7200000) {
           signOut(auth);
           sessionStorage.removeItem("admin_token");
           setIsAuthenticated(false);
