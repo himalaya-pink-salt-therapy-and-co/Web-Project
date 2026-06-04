@@ -302,7 +302,7 @@ export default function AdminProducts() {
     <AdminProtectedRoute>
       <div className="flex w-full min-h-screen bg-gray-100">
         <DashboardBar />
-        <section className="flex-1 px-2 md:px-8 py-2 relative overflow-x-hidden h-screen overflow-y-auto">
+        <section className="flex-1 px-2 md:px-8 py-6 relative overflow-x-hidden h-screen overflow-y-auto">
         <div
           ref={adminPanelRef}
           className="border-l border-zinc-200 w-110 py-8 px-4 absolute bg-white top-0 -right-130
@@ -665,7 +665,7 @@ export default function AdminProducts() {
             onClick={handleAddClick}
             className="bg-[#D77D4C] text-white py-2.5 px-6 rounded-md hover:bg-[#c06a38] transition-colors flex items-center gap-2 font-jost shadow-sm cursor-pointer"
           >
-            <FaPlus size={13} /> Add New Product
+            <FaPlus size={13} /> Add Product
           </button>
           
           <button

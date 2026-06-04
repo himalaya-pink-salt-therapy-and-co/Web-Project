@@ -144,7 +144,7 @@ export default function AdminBlogs() {
     <AdminProtectedRoute>
       <div className="flex w-full min-h-screen bg-gray-100">
         <DashboardBar />
-        <section className="flex-1 px-2 md:px-8 py-4 relative h-screen overflow-y-auto">
+        <section className="flex-1 px-2 md:px-8 py-6 relative h-screen overflow-y-auto">
         <h1 className="text-2xl font-semibold text-center mb-8 font-jost">
           Blog Catalog
         </h1>

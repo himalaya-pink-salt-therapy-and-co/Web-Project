@@ -4,6 +4,7 @@ import emailjs from "@emailjs/browser";
 import Toast from "./tost";
 import { FaPhone } from "react-icons/fa6";
 import { RiInstagramFill } from "react-icons/ri";
+import Link from "next/link";
 
 export default function Footer() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -40,29 +41,42 @@ export default function Footer() {
 
   return (
     <>
-      <section className="flex flex-col lg:gap-4 gap-2 md:grid grid-cols-1 lg:grid-cols-3 justify-between px-2 px-4 md:px-20 mx-auto py-16 ">
-        <div className="w-full">
-          <p className="font-bold text-xl xl:text-2xl font-jost">About Us</p>
-          <p className="font-jost text-sm xl:text-lg">
+      <section className="flex flex-col gap-8 md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-between px-4 md:px-12 lg:px-20 mx-auto py-16 bg-white border-t border-zinc-100">
+        <div className="w-full flex flex-col gap-4">
+          <p className="font-bold text-xl xl:text-2xl font-jost text-zinc-900">About Us</p>
+          <p className="font-jost text-sm xl:text-base text-zinc-600 leading-relaxed">
             Himalaya Pink Salt Therapy & Co is your trusted source for premium
             Himalayan pink salt bricks, bringing the ancient healing traditions
             of the Himalayas into modern wellness spaces.
           </p>
         </div>
 
-        <div className="flex ">
-          <div className="flex flex-col space-y-2 ">
-            <p className="font-bold text-xl xl:text-2xl font-jost">Usefull Links</p>
-            <div className="flex justify-between">
-              <p className="flex items-center gap-2 cursor-pointer text-sm xl:text-md font-jost">
-                <FaPhone size={18} />
-                +92 123 456 789
-              </p>
-            </div>
-            <p className="flex items-center gap-2 cursor-pointer font-jost text-sm md:text-md">
-              <RiInstagramFill size={20} />
-              Instagram
-            </p>
+        <div className="flex flex-col gap-4 md:pl-8">
+          <p className="font-bold text-xl xl:text-2xl font-jost text-zinc-900">Useful Links</p>
+          <ul className="flex flex-col space-y-3 font-jost text-sm xl:text-base text-zinc-600">
+            <li>
+              <Link href="/" className="hover:text-[#D77D4C] transition-colors">Home</Link>
+            </li>
+            <li>
+              <Link href="/blogs" className="hover:text-[#D77D4C] transition-colors">Blogs</Link>
+            </li>
+            <li>
+              <Link href="/admin/login" className="hover:text-[#D77D4C] transition-colors">Admin Portal</Link>
+            </li>
+          </ul>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <p className="font-bold text-xl xl:text-2xl font-jost text-zinc-900">Contact Us</p>
+          <div className="flex flex-col space-y-3 font-jost text-sm xl:text-base text-zinc-600">
+            <a href="tel:+92123456789" className="flex items-center gap-3 hover:text-[#D77D4C] transition-colors cursor-pointer">
+              <FaPhone size={16} className="text-[#D77D4C]" />
+              +92 123 456 789
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-[#D77D4C] transition-colors cursor-pointer">
+              <RiInstagramFill size={18} className="text-[#D77D4C]" />
+              Follow on Instagram
+            </a>
           </div>
         </div>
 
