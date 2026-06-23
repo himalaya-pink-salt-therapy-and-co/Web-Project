@@ -69,11 +69,7 @@ export default function Contactus() {
               Contact Us
             </p>
             <p className="md:text-lg font-jost text-center w-full">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni
-              ducimus voluptates adipisci odit debitis libero necessitatibus
-              delectus autem possimus ipsa, corporis dolorum iusto obcaecati
-              pariatur unde harum consequatur aperiam exercitationem nulla
-              consequuntur in quibusdam. Culpa corrupti iste dolore magnam ut.
+              At Himalaya Pink Salt Therapy & Co., we take pride in delivering authentic Himalayan pink salt products with quality and care. Whether you are a retailer, distributor, or individual customer, we are happy to assist you. Reach out using the form below, and a member of our team will contact you shortly.
             </p>
           </div>
 
