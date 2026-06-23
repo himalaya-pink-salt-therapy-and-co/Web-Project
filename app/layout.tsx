@@ -19,6 +19,9 @@ const jost = Jost({
 
 export const metadata: Metadata = {
   title: "Himalaya Pink Salt Therapy & Co",
+  icons: {
+    icon: "/Logo.jpeg",
+  },
   description: "Experience the healing power of Himalayan pink salt therapy. Relax, rejuvenate, and breathe easy with our natural salt treatments.",
 };
 
