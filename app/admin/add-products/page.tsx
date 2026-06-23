@@ -8,7 +8,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase";
 import { FaEdit, FaHome, FaPlus, FaTimes, FaTrash } from "react-icons/fa";
 import Toast from "@/app/components/tost";
-import Link from "next/link";
 import { IoEyeSharp } from "react-icons/io5";
 import { FiChevronsLeft } from "react-icons/fi";
 import { LuGitBranchPlus } from "react-icons/lu";
@@ -106,6 +105,12 @@ export default function AdminProducts() {
     });
     return () => unsubscribe();
   }, []);
+
+  // AdminProtectedRoute ensures auth.currentUser is loaded before this component renders.
+  // We can derive if the current user is a superadmin directly during render.
+  const currentUserEmail = auth.currentUser?.email;
+  const currentAdmin = admins.find((a) => a.email === currentUserEmail);
+  const isSuperAdmin = currentAdmin?.role?.trim().toLowerCase() === "superadmin";
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -297,7 +302,7 @@ export default function AdminProducts() {
   const openAdminPanel = (): void => {
     if (!adminPanelRef.current) return;
 
-    adminPanelRef.current.classList.remove("-right-130");
+    adminPanelRef.current.classList.remove("-right-full");
     adminPanelRef.current.classList.add("right-0");
   };
 
@@ -305,27 +310,27 @@ export default function AdminProducts() {
     if (!adminPanelRef.current) return;
 
     adminPanelRef.current.classList.remove("right-0");
-    adminPanelRef.current.classList.add("-right-130");
+    adminPanelRef.current.classList.add("-right-full");
   };
 
   return (
     <AdminProtectedRoute>
       <div className="flex w-full min-h-screen bg-gray-100">
         <DashboardBar />
-        <section className="flex-1 px-2 md:px-8 py-6 relative overflow-x-hidden h-screen overflow-y-auto">
+        <section className="flex-1 px-2 md:px-8 py-6 relative overflow-x-hidden  h-screen overflow-y-auto">
           <div
             ref={adminPanelRef}
-            className="border-l border-zinc-200 w-110 py-8 px-4 absolute bg-white top-0 -right-130
+            className="border-l border-zinc-200 w-full sm:w-110 py-8 px-4 sm:px-8 absolute bg-white top-0 -right-full
              text-center font-jost h-full 
-             transition-all duration-300 ease-in-out z-50"
+             transition-all duration-300 ease-in-out z-50 overflow-y-auto"
           >
-            <div
+            {/* Interior close button for all devices */}
+            <button
               onClick={closeAdminPanel}
-              className="border absolute p-1 rounded-full border-zinc-300 text-[#D77D4C]
-             flex items-center justify-center top-10 -left-3 bg-white cursor-pointer"
+              className="absolute top-4 right-4 p-2 text-zinc-500 hover:text-gray-800 cursor-pointer"
             >
-              <FiChevronsLeft size={15} className="text-[#D77D4C] rotate-180" />
-            </div>
+              <FaTimes size={20} />
+            </button>
 
             <div className="flex items-center h-full flex-col">
               <main className="flex items-center justify-center w-full flex-col gap-4">
@@ -341,7 +346,7 @@ export default function AdminProducts() {
                 </p>
               </main>
               <main className="w-full flex flex-col gap-6 mt-4">
-                <div className="flex w-full gap-2">
+                <div className="flex flex-col sm:flex-row w-full gap-2">
                   <input
                     type="text"
                     name="firstName"
@@ -434,7 +439,7 @@ export default function AdminProducts() {
                 <p className="font-semibold mb-2">Team Members</p>
                 <main className="py-2 h-70 overflow-auto flex flex-col gap-2">
                   {admins.filter((admin) => admin.role === "admin").length >
-                  0 ? (
+                    0 ? (
                     admins
                       .filter((admin) => admin.role === "admin")
                       .map((admin) => (
@@ -624,9 +629,8 @@ export default function AdminProducts() {
                   products.map((prod, index) => (
                     <tr
                       key={prod.id}
-                      className={`border-b border-zinc-200 hover:bg-orange-50 transition-colors duration-150 ${
-                        index % 2 === 0 ? "bg-white" : "bg-zinc-50"
-                      }`}
+                      className={`border-b border-zinc-200 hover:bg-orange-50 transition-colors duration-150 ${index % 2 === 0 ? "bg-white" : "bg-zinc-50"
+                        }`}
                     >
                       <td className="p-4 border-r border-zinc-200">
                         <img
@@ -691,13 +695,15 @@ export default function AdminProducts() {
               <FaPlus size={13} /> Add Product
             </button>
 
-            <button
-              type="button"
-              onClick={openAdminPanel}
-              className="bg-white border border-[#D77D4C] text-[#D77D4C] py-2.5 px-6 rounded-md hover:bg-orange-50 transition-colors flex items-center gap-2 font-jost shadow-sm cursor-pointer"
-            >
-              <FaPlus size={13} /> Admins
-            </button>
+            {isSuperAdmin && (
+              <button
+                type="button"
+                onClick={openAdminPanel}
+                className="bg-white border border-[#D77D4C] text-[#D77D4C] py-2.5 px-6 rounded-md hover:bg-orange-50 transition-colors flex items-center gap-2 font-jost shadow-sm cursor-pointer"
+              >
+                <FaPlus size={13} /> Admins
+              </button>
+            )}
           </div>
         </section>
       </div>
